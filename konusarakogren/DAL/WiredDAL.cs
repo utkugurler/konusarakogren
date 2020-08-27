@@ -9,6 +9,7 @@ namespace konusarakogren.DAL
 {
 	public class WiredDAL
 	{
+		// Wired RSS' inden bilgileri çekip Wired List' inde döndürüyoruz
 		public List<Entity.Wired> GetRSS()
 		{
 			List<Entity.Wired> wiredPosts = new List<Entity.Wired>();

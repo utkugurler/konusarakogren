@@ -26,9 +26,11 @@ namespace konusarakogren.Controllers
 		static List<Entity.Wired> wiredPosts;
 		public IActionResult Index()
 		{
+			// Wireddan bilgileri çekiyor
 			WiredDAL wiredDAL = new WiredDAL();
 			wiredPosts = wiredDAL.GetRSS();
 
+			// wiredpostlarını viewbag' e gömüyoruz dropdown içerisine aktarma yapacağız
 			ViewBag.wiredPosts = new SelectList(wiredPosts, "Id", "Title");
 
 			ViewBag.id = Request.Query["id"];
@@ -37,39 +39,19 @@ namespace konusarakogren.Controllers
 			dogru.Add("b");
 			dogru.Add("c");
 			dogru.Add("d");
-			ViewBag.DogruCevaplar = new SelectList(dogru);
+			ViewBag.DogruCevaplar = new SelectList(dogru); // şıkları ViewBag' e gömüyoruz bunlarıda dropdownliste gömeceğiz
 
 			if (Request.Query["id"].Count > 0)
 			{
-				ViewBag.Title = wiredPosts[Convert.ToInt32(Request.Query["id"])].Title;
+				// Eğer wired başlığı seçildiyse title ve description bilgisi dolduruluyor
+				ViewBag.WiredTitle = wiredPosts[Convert.ToInt32(Request.Query["id"])].Title;
 				ViewBag.Description = wiredPosts[Convert.ToInt32(Request.Query["id"])].Description;
 			}
 
 			return View();
 		}
 
-		[Microsoft.AspNetCore.Authorization.AllowAnonymous]
-		public IActionResult Login(Entity.User model)
-		{
-			if (ModelState.IsValid)
-			{
-				DAL.LoginDAL loginDAL = new LoginDAL();
-				bool isValid = loginDAL.IsUserValid(model.Username, model.Password);
-				if(isValid)
-				{
-					// SetAuthCookie(model.Username, true);
-					return RedirectToAction("Index", "Home");
-				}
-				else
-				{
-					if(model.Username != null && model.Password != null)
-						ModelState.AddModelError("", "EMail veya şifre hatalı!");
-				}
-			}
-
-			return View();
-		}
-
+		// Quizleri yarattığımız yer form üzerinden doldurduğumuz verileri buraya yönlendiriyor
 		public IActionResult AddQuiz(Entity.Quiz model)
 		{
 			if (ModelState.IsValid)
@@ -88,7 +70,10 @@ namespace konusarakogren.Controllers
 			}
 			return View();
 		}
-		// TODO: silme eksik
+
+		/* Quizleri listeleme kısmında Delete' ye mi View' emi bastı kontrolü yapıyor ona göre işlemine devam edecek
+			Eğer sayfayı ilk defa açtıysa listeleme işlemini yapacak
+		 */
 		public IActionResult QuizList(string quizId, string submit)
 		{
 			if (Request.Method == "POST")
@@ -138,6 +123,9 @@ namespace konusarakogren.Controllers
 			return View();
 		}
 
+		/* 
+		 Quiz' i açtığımızda verilerini getirdiği kısım
+		 */
 		public IActionResult QuizView(Entity.Quiz model)
 		{
 			int quizId = Convert.ToInt32(Request.Query["quizId"]);
@@ -157,12 +145,15 @@ namespace konusarakogren.Controllers
 
 			return View();
 		}
+
+		// Quizi bitirdikten sonra kontrolu yaptığı fonksiyon
 		public IActionResult QuizCheck(string soru1, string soru2, string soru3, string soru4, int quizId)
 		{
 			QuestionDAL questionDAL = new QuestionDAL();
-			List<string> dogruCevaplar = questionDAL.CheckQuiz(quizId);
+			List<string> dogruCevaplar = questionDAL.CheckQuiz(quizId); // Doğru şıkları listeliyoruz
 			Entity.Answers answers = new Entity.Answers();
 
+			// Burada hangi soru şıkkının doğru olduğunu kontrol ediyoruz
 			if (soru1 == dogruCevaplar[0])
 			{
 				answers.Soru1 = true;
@@ -205,7 +196,7 @@ namespace konusarakogren.Controllers
 				answers.Soru4cevap = 'd';
 			}
 
-			var json = Newtonsoft.Json.JsonConvert.SerializeObject(answers);
+			var json = Newtonsoft.Json.JsonConvert.SerializeObject(answers); // Listeyi json' a çeviriyoruz js tarafında parse edip json üzerinden kontrollerini yapacak
 
 
 			// var data = new { status = "ok", result = result };
@@ -213,22 +204,12 @@ namespace konusarakogren.Controllers
 			return Json(json);
 		}
 
-		public IActionResult QuizDelete(string quizId)
-		{
-			
-			
-			return View();
-		}
 
 		public ActionResult UserLandingView()
 		{
 			return View();
 		}
 
-		public IActionResult Privacy()
-		{
-			return View();
-		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

@@ -8,16 +8,15 @@ namespace konusarakogren.DAL
 {
 	public class LoginDAL
 	{
-		SqliteConnectionStringBuilder sqliteConnectionStringBuilder = new SqliteConnectionStringBuilder();
 		private string UserTable = "UserTable";
+		DBControl dbControl = new DBControl();
 
+		// Kullanıcı var mı yok mu kontrolu yapılıyor
 		public bool IsUserValid(string userName, string password)
 		{
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
-
 			// TODO: quizzesden gelen verileri jsona çevir
 			int result = 0;
-			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			using (var connection = dbControl.GetDB())
 			{
 				connection.Open();
 

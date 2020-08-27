@@ -11,27 +11,14 @@ namespace konusarakogren.DAL
 {
 	public class QuestionDAL
 	{
-		SqliteConnectionStringBuilder sqliteConnectionStringBuilder = new SqliteConnectionStringBuilder();
 		private string QuestionsTable = "QuizTable";
+		DBControl dbControl = new DBControl();
 
-		public void ConnectDB()
-		{
-			sqliteConnectionStringBuilder.DataSource = "./konusarakOgrenDB.db";
-
-			using(var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
-			{
-				connection.Open();
-
-				var tableCmd = connection.CreateCommand();
-			}
-		}
-
+		// DB' ye Quiz ekranında girdiğimiz parametreler geliyor quizId' si aynı kalacak şekilde 4 soruda ekleniyor
 		public bool Add(string title, string description, string question, string a, string b, string c, string d, int quizId, string dogruCevap)
 		{
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
-
 			int result = 0;
-			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			using (var connection = dbControl.GetDB())
 			{
 				connection.Open();
 
@@ -50,12 +37,11 @@ namespace konusarakogren.DAL
 			}
 		}
 
+		// QuizId' sini bulup 4 soruyu birden siliyor
 		public bool Delete(int quizId)
 		{
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
-
 			int result = 0;
-			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			using (var connection = dbControl.GetDB())
 			{
 				connection.Open();
 
@@ -73,12 +59,12 @@ namespace konusarakogren.DAL
 			}
 		}
 
+		// QuizListe' sinde göstermek için sqlden gelen elemanları class list' inde toplayıp geri döndürüyoruz
 		public List<Entity.QuizList> QuizListRead()
 		{
 			List<QuizList> questionLists = new List<QuizList>();
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
-			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			using (var connection = dbControl.GetDB())
 			{
 				connection.Open();
 
@@ -105,6 +91,7 @@ namespace konusarakogren.DAL
 			return questionLists;
 		}
 
+		// Quiz içerisindeki soruların detaylarını çekiyoruz
 		public Quiz QuizRead(int quizId)
 		{
 			Quiz quiz = new Quiz();
@@ -115,10 +102,8 @@ namespace konusarakogren.DAL
 			quiz.C = new List<string>();
 			quiz.D = new List<string>();
 
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
-
 			int result = 0;
-			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			using (var connection = dbControl.GetDB())
 			{
 				connection.Open();
 
@@ -142,12 +127,12 @@ namespace konusarakogren.DAL
 			return quiz;
 		}
 
+		// Burada tabloya quizleri eklerken sonId'yi çekiyoruzki bir sonraki gelecek quiz için bir ayrıştırma oluşturalım
 		public int GetLastQuizId()
 		{
 			int lastId = 0;
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
-			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			using (var connection = dbControl.GetDB())
 			{
 				connection.Open();
 
@@ -170,12 +155,12 @@ namespace konusarakogren.DAL
 			return lastId;
 		}
 
+		// Sorunun dogru cevabını çekiyoruz
 		public List<string> CheckQuiz(int quizId)
 		{
 			List<string> dogruCevap = new List<string>();
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
-			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			using (var connection = dbControl.GetDB())
 			{
 				connection.Open();
 
