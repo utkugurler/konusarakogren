@@ -9,6 +9,7 @@ using konusarakogren.Models;
 using konusarakogren.DAL;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace konusarakogren.Controllers
 {
@@ -76,8 +77,7 @@ namespace konusarakogren.Controllers
 														model.A[i], model.B[i], model.C[i], model.D[i], 
 															getLastQuizId+1);
 				}
-
-				Redirect("Home/Index");
+				return RedirectToAction("QuizList");
 			}
 			return View();
 		}
@@ -107,13 +107,18 @@ namespace konusarakogren.Controllers
 			return View();
 		}
 
-		public IActionResult QuizDelete(Entity.QuizList quizList)
+		public IActionResult QuizDelete(string quizId)
 		{
+			
 			if (ModelState.IsValid)
 			{
-				int quizId = quizList.QuizId;
+				
 				QuestionDAL questionDAL = new QuestionDAL();
-				questionDAL.Delete(quizId);
+				if (Convert.ToInt32(quizId) != 0)
+				{
+					questionDAL.Delete(Convert.ToInt32(quizId));
+				}
+				return RedirectToAction("QuizList");
 			}
 			return View();
 		}

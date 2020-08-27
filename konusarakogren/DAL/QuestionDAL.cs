@@ -28,7 +28,7 @@ namespace konusarakogren.DAL
 
 		public bool Add(string title, string description, string question, string a, string b, string c, string d, int quizId)
 		{
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Desktop\konusarakogren\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
+			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
 			// TODO: quizzesden gelen verileri jsona çevir
 			int result = 0;
@@ -52,9 +52,8 @@ namespace konusarakogren.DAL
 
 		public bool Delete(int quizId)
 		{
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Desktop\konusarakogren\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
+			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
-			// TODO: quizzesden gelen verileri jsona çevir
 			int result = 0;
 			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
 			{
@@ -77,7 +76,7 @@ namespace konusarakogren.DAL
 		public List<Entity.QuizList> Read()
 		{
 			List<QuizList> questionLists = new List<QuizList>();
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Desktop\konusarakogren\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
+			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
 			// TODO: quizzesden gelen verileri jsona çevir
 			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
@@ -110,7 +109,7 @@ namespace konusarakogren.DAL
 		public int GetLastQuizId()
 		{
 			int lastId = 0;
-			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Desktop\konusarakogren\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
+			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
 			// TODO: quizzesden gelen verileri jsona çevir
 			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
