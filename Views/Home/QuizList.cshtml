@@ -1,0 +1,47 @@
+﻿@model konusarakogren.Entity.QuizList
+
+@{
+    ViewData["Title"] = "QuizList";
+}
+
+<h1>Quiz Listesi</h1>
+
+<p>
+    <a asp-action="Index">Create New</a>
+</p>
+<table class="table">
+    <tbody>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Publish</th>
+                    <th scope="col">Process</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    @using (Html.BeginForm("QuizDelete", "Home", FormMethod.Post))
+
+                    for (int i = 0; i < Convert.ToInt32(ViewBag.Count); i++)
+                    {
+                        int count = i + 1;
+                        string title = ViewBag.Question[i];
+                        string publish = ViewBag.PublishDate[i];
+                        int quizId = ViewBag.QuizID[i];
+
+                        <tr>
+                            <th scope="row">@count</th>
+                            <td>@title</td>
+                            <td>@publish</td>
+                            <td><input type="submit" value="Delete" class="form-control" id="@quizId"/></td>
+                        </tr>
+                        <br />
+                    }
+               
+
+
+                }
+            </tbody>
+    </table>

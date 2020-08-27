@@ -1,0 +1,55 @@
+﻿@model konusarakogren.Entity.User;
+
+@{
+    ViewData["Title"] = "Login";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/Admin/css/Login/base.css" rel="stylesheet" />
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+
+    <div class="login" style="width:350px !important;margin:0 auto; margin-top:200px;">
+
+        <div class="box-header">
+
+            <h2> Admin Panel Yönetimi</h2>
+
+        </div>
+        <div class="box">
+            @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+            {
+
+            <div class="form col">
+
+
+                @Html.LabelFor(f => f.Username)
+                
+                @Html.TextBoxFor(f => f.Username, new { title = "Kullanıcı adınızı giriniz.", @Value = @ViewBag.user, @class = "form-control" })
+
+                @Html.LabelFor(f => f.Password)
+                @Html.PasswordFor(f => f.Password, new { title = "Kullanıcı şifrenizi giriniz.", @Value = @ViewBag.password, @class = "form-control" })
+                <div class="loginbtn">
+                    <input type="submit" value="Login" class="btn btn-primary" />
+                </div>
+                <div>
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                </div>
+
+            </div>
+
+            }
+        </div>
+
+    </div>
+
+</body>
+</html>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

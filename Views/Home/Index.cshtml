@@ -1,0 +1,72 @@
+﻿@{
+    @model konusarakogren.Entity.Quiz;
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <div>
+        @Html.DropDownList("wiredPosts", ViewBag.wiredPosts as SelectList, "Lütfen Yazı Seçiniz", new { onchange = "myFunction()" })
+        <div>
+            <h4>
+                <div class="alert alert-success" role="alert">
+                    <p>
+                        @ViewBag.Title
+                        <hr />
+                        @ViewBag.Description
+                    </p>
+                </div>
+            </h4>
+        </div>
+
+        @using (Html.BeginForm("AddQuiz", "Home", FormMethod.Post))
+        {
+            for (int i = 1; i < 5; i++)
+            {
+                <div>
+                    @Html.TextBoxFor(f => f.Question[i - 1], new { @class = "form-control", placeholder = $"{i} Soru"})
+                </div>
+                <div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                        </div>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">A</span>
+                        </div>
+                        @Html.TextBoxFor(f => f.A[i - 1], new {  @class = "form-control" })
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">B</span>
+                        </div>
+                        @Html.TextBoxFor(f => f.B[i - 1], new { @class = "form-control" })
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                        </div>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">C</span>
+                        </div>
+                        @Html.TextBoxFor(f => f.C[i - 1], new { @class = "form-control" })
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">D</span>
+                        </div>
+                        @Html.TextBoxFor(f => f.D[i - 1], new { @class = "form-control" })
+                    </div>
+                </div>
+                <br />
+            }
+            <input type="submit" class="btn btn-primary btn-lg btn-block" value="Quiz Ekle">
+        }
+
+    </div>
+
+    <script type="text/javascript">
+        function myFunction() {
+            var idIndex = document.getElementById("wiredPosts").value;
+            window.location.href = "?id=" + idIndex;
+        }
+    </script>
+
+
+</div>
