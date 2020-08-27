@@ -30,13 +30,16 @@
                         string title = ViewBag.Question[i];
                         string publish = ViewBag.PublishDate[i];
                         quizId = ViewBag.QuizID[i];
-                        @using (Html.BeginForm("QuizDelete", "Home", FormMethod.Post))
+                        @using (Html.BeginForm("QuizList", "Home", FormMethod.Post))
                         { 
                             <tr>
-                                <th scope="row" name="quizId"><input type="hidden" value="@quizId" name="quizId" /></th>
+                                <th scope="row" name="quizId"><input type="hidden" value="@quizId" name="quizId" />@quizId</th>
                                 <td>@title</td>
                                 <td>@publish</td>
-                                <td><input type="submit" value="Delete" class="form-control" name="submit" /></td>
+                                <td>
+                                    <input type="submit" value="Delete" class="form-control" name="submit" />
+                                    <input type="submit" value="View" class="form-control" name="submit" />
+                                </td>
                             </tr>
                         }
                     }

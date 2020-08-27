@@ -37,7 +37,7 @@ namespace konusarakogren.DAL
 				connection.Open();
 
 				var tableCmd = connection.CreateCommand();
-				tableCmd.CommandText = $"INSERT INTO {QuestionsTable}(title,description,question, a, b, c, d, quizId, publishdate) values('{title.Replace("'", "")}', '{description}', '{question}', '{a}', '{b}', '{c}', '{d}', {quizId}, '{DateTime.Now.Date}')";
+				tableCmd.CommandText = $"INSERT INTO {QuestionsTable}(title,description,question, a, b, c, d, quizId, publishdate) values('{title.Replace("'", "")}', '{description}', '{question}', '{a}', '{b}', '{c}', '{d}', {quizId}, '{DateTime.Now}')";
 				result = tableCmd.ExecuteNonQuery();
 			}
 			if(result > 0)

@@ -82,44 +82,64 @@ namespace konusarakogren.Controllers
 			return View();
 		}
 		// TODO: silme eksik
-		public IActionResult QuizList()
+		public IActionResult QuizList(string quizId, string submit)
 		{
-			QuestionDAL questionDAL = new QuestionDAL();
-			List<Entity.QuizList> quizLists = new List<Entity.QuizList>();
-			quizLists = questionDAL.Read();
-
-			List<string> titles = new List<string>();
-			List<string> publishdates = new List<string>();
-			List<int> quizIds = new List<int>();
-			
-			for (int i = 0; i < quizLists.Count; i++)
+			if (Request.Method == "POST")
 			{
-				titles.Add(quizLists[i].Title);
-				publishdates.Add(quizLists[i].PublishDate);
-				quizIds.Add(quizLists[i].QuizId);
+				if(submit == "Delete")
+				{
+					if (ModelState.IsValid)
+					{
+
+						QuestionDAL questionDAL = new QuestionDAL();
+						if (Convert.ToInt32(quizId) != 0)
+						{
+							questionDAL.Delete(Convert.ToInt32(quizId));
+						}
+						return RedirectToAction("QuizList");
+					}
+				}
+				else if(submit == "View")
+				{
+
+				}
 			}
+			else
+			{
+				QuestionDAL questionDAL = new QuestionDAL();
+				List<Entity.QuizList> quizLists = new List<Entity.QuizList>();
+				quizLists = questionDAL.Read();
 
-			ViewBag.Question = titles;
-			ViewBag.PublishDate = publishdates;
-			ViewBag.QuizID = quizIds;
-			ViewBag.Count = titles.Count;
+				List<string> titles = new List<string>();
+				List<string> publishdates = new List<string>();
+				List<int> quizIds = new List<int>();
 
+				for (int i = 0; i < quizLists.Count; i++)
+				{
+					titles.Add(quizLists[i].Title);
+					publishdates.Add(quizLists[i].PublishDate);
+					quizIds.Add(quizLists[i].QuizId);
+				}
+
+				ViewBag.Question = titles;
+				ViewBag.PublishDate = publishdates;
+				ViewBag.QuizID = quizIds;
+				ViewBag.Count = titles.Count;
+			}
+			
+
+			return View();
+		}
+
+		public IActionResult QuizView()
+		{
 			return View();
 		}
 
 		public IActionResult QuizDelete(string quizId)
 		{
 			
-			if (ModelState.IsValid)
-			{
-				
-				QuestionDAL questionDAL = new QuestionDAL();
-				if (Convert.ToInt32(quizId) != 0)
-				{
-					questionDAL.Delete(Convert.ToInt32(quizId));
-				}
-				return RedirectToAction("QuizList");
-			}
+			
 			return View();
 		}
 
