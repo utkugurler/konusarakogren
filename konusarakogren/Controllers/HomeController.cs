@@ -10,6 +10,7 @@ using konusarakogren.DAL;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace konusarakogren.Controllers
 {
@@ -101,14 +102,14 @@ namespace konusarakogren.Controllers
 				}
 				else if(submit == "View")
 				{
-
+					return RedirectToAction($"QuizView");
 				}
 			}
 			else
 			{
 				QuestionDAL questionDAL = new QuestionDAL();
 				List<Entity.QuizList> quizLists = new List<Entity.QuizList>();
-				quizLists = questionDAL.Read();
+				quizLists = questionDAL.QuizListRead();
 
 				List<string> titles = new List<string>();
 				List<string> publishdates = new List<string>();
@@ -131,9 +132,76 @@ namespace konusarakogren.Controllers
 			return View();
 		}
 
-		public IActionResult QuizView()
+		public IActionResult QuizView(Entity.Quiz model)
 		{
+			int quizId = Convert.ToInt32(Request.Query["quizId"]);
+			Entity.Quiz quiz = new Entity.Quiz();
+			QuestionDAL questionDAL = new QuestionDAL();
+			quiz = questionDAL.QuizRead(quizId);
+
+			ViewBag.posts = quiz.Title;
+			ViewBag.description = quiz.Description;
+			ViewBag.questions = quiz.Question;
+			ViewBag.a = quiz.A;
+			ViewBag.b = quiz.B;
+			ViewBag.c = quiz.C;
+			ViewBag.d = quiz.D;
+			ViewBag.count = quiz.Question.Count;
+			ViewBag.quizid = quizId;
+
 			return View();
+		}
+		public IActionResult QuizCheck(string soru1, string soru2, string soru3, string soru4, int quizId)
+		{
+			QuestionDAL questionDAL = new QuestionDAL();
+			List<string> dogruCevaplar = questionDAL.CheckQuiz(quizId);
+			Entity.Answers answers = new Entity.Answers();
+
+			if (soru1 == dogruCevaplar[0])
+			{
+				answers.Soru1 = true;	
+			}
+			else
+			{
+				answers.Soru1 = false;
+			}
+			if (soru2 == dogruCevaplar[1])
+			{
+				answers.Soru2 = true;
+
+			}
+			else
+			{
+				answers.Soru2 = false;
+
+			}
+			if (soru3 == dogruCevaplar[2])
+			{
+				answers.Soru3 =true;
+
+			}
+			else
+			{
+				answers.Soru3 = false;
+
+			}
+			if (soru4 == dogruCevaplar[3])
+			{
+				answers.Soru4 = true;
+
+			}
+			else
+			{
+				answers.Soru4 = false;
+
+			}
+
+			var json = Newtonsoft.Json.JsonConvert.SerializeObject(answers);
+
+
+			// var data = new { status = "ok", result = result };
+			json = json.Replace("'\'", "");
+			return Json(json);
 		}
 
 		public IActionResult QuizDelete(string quizId)

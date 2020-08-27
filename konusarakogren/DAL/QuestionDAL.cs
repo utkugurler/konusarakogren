@@ -30,14 +30,13 @@ namespace konusarakogren.DAL
 		{
 			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
-			// TODO: quizzesden gelen verileri jsona çevir
 			int result = 0;
 			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
 			{
 				connection.Open();
 
 				var tableCmd = connection.CreateCommand();
-				tableCmd.CommandText = $"INSERT INTO {QuestionsTable}(title,description,question, a, b, c, d, quizId, publishdate) values('{title.Replace("'", "")}', '{description}', '{question}', '{a}', '{b}', '{c}', '{d}', {quizId}, '{DateTime.Now}')";
+				tableCmd.CommandText = $"INSERT INTO {QuestionsTable}(title,description,question, a, b, c, d, quizId, publishdate) values('{title.Replace("'", "")}', '{description.Replace("'", "")}', '{question.Replace("'", "")}', '{a.Replace("'", "")}', '{b.Replace("'", "")}', '{c.Replace("'", "")}', '{d.Replace("'", "")}', {quizId}, '{DateTime.Now}')";
 				result = tableCmd.ExecuteNonQuery();
 			}
 			if(result > 0)
@@ -73,12 +72,11 @@ namespace konusarakogren.DAL
 			}
 		}
 
-		public List<Entity.QuizList> Read()
+		public List<Entity.QuizList> QuizListRead()
 		{
 			List<QuizList> questionLists = new List<QuizList>();
 			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
-			// TODO: quizzesden gelen verileri jsona çevir
 			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
 			{
 				connection.Open();
@@ -106,12 +104,48 @@ namespace konusarakogren.DAL
 			return questionLists;
 		}
 
+		public Quiz QuizRead(int quizId)
+		{
+			Quiz quiz = new Quiz();
+			quiz.Question = new List<string>();
+			quiz.Id = new List<int>();
+			quiz.A = new List<string>();
+			quiz.B = new List<string>();
+			quiz.C = new List<string>();
+			quiz.D = new List<string>();
+
+			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
+
+			int result = 0;
+			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			{
+				connection.Open();
+
+				var tableCmd = connection.CreateCommand();
+				tableCmd.CommandText = $"select * from {QuestionsTable} where quizId='{quizId}'";
+				SqliteDataReader dataReader = tableCmd.ExecuteReader();
+
+				while (dataReader.Read())
+				{
+					quiz.Id.Add(Convert.ToInt32(dataReader["id"]));
+					quiz.Title = dataReader["title"].ToString();
+					quiz.Description = dataReader["description"].ToString();
+					string a = dataReader["question"].ToString();
+					quiz.Question.Add(dataReader["question"].ToString());
+					quiz.A.Add(dataReader["a"].ToString());
+					quiz.B.Add(dataReader["b"].ToString());
+					quiz.C.Add(dataReader["c"].ToString());
+					quiz.D.Add(dataReader["d"].ToString());
+				}
+			}
+			return quiz;
+		}
+
 		public int GetLastQuizId()
 		{
 			int lastId = 0;
 			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
-			// TODO: quizzesden gelen verileri jsona çevir
 			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
 			{
 				connection.Open();
@@ -133,6 +167,29 @@ namespace konusarakogren.DAL
 			}
 			
 			return lastId;
+		}
+
+		public List<string> CheckQuiz(int quizId)
+		{
+			List<string> dogruCevap = new List<string>();
+			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
+
+			using (var connection = new SqliteConnection(sqliteConnectionStringBuilder.ConnectionString))
+			{
+				connection.Open();
+
+				var tableCmd = connection.CreateCommand();
+				tableCmd.CommandText = $"SELECT dogrucevap FROM {QuestionsTable} where quizId={quizId}";
+				SqliteDataReader dataReader = tableCmd.ExecuteReader();
+				while (dataReader.Read())
+				{
+					dogruCevap.Add(dataReader["dogrucevap"].ToString());
+				}
+
+				dataReader.Close();
+			}
+
+			return dogruCevap;
 		}
 		
 	}

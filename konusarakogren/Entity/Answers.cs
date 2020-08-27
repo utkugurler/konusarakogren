@@ -7,14 +7,14 @@ namespace konusarakogren.Entity
 {
 	public class Answers
 	{
-		private string a;
-		private string b;
-		private string c;
-		private string d;
+		private bool soru1;
+		private bool soru2;
+		private bool soru3;
+		private bool soru4;
 
-		public string A { get => this.a; set => this.a = value; }
-		public string B { get => b; set => b = value; }
-		public string C { get => c; set => c = value; }
-		public string D { get => d; set => d = value; }
+		public bool Soru1 { get => soru1; set => soru1 = value; }
+		public bool Soru2 { get => soru2; set => soru2 = value; }
+		public bool Soru3 { get => soru3; set => soru3 = value; }
+		public bool Soru4 { get => soru4; set => soru4 = value; }
 	}
 }

@@ -9,6 +9,7 @@ namespace konusarakogren.Entity
 	{
 		private string title;
 		private string description;
+		private List<int> id;
 		private List<string> question;
 		private List<string> a;
 		private List<string> b;
@@ -22,6 +23,7 @@ namespace konusarakogren.Entity
 		public List<string> D { get => d; set => d = value; }
 		public string Title { get => title; set => title = value; }
 		public string Description { get => description; set => description = value; }
+		public List<int> Id { get => id; set => id = value; }
 	}
 
 	
