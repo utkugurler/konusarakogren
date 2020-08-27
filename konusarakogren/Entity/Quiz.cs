@@ -15,6 +15,7 @@ namespace konusarakogren.Entity
 		private List<string> b;
 		private List<string> c;
 		private List<string> d;
+		private List<string> dogruCevap;
 
 		public List<string> Question { get => question; set => question = value; }
 		public List<string> A { get => a; set => a = value; }
@@ -24,6 +25,7 @@ namespace konusarakogren.Entity
 		public string Title { get => title; set => title = value; }
 		public string Description { get => description; set => description = value; }
 		public List<int> Id { get => id; set => id = value; }
+		public List<string> DogruCevap { get => dogruCevap; set => dogruCevap = value; }
 	}
 
 	

@@ -26,7 +26,7 @@
             for (int i = 1; i < 5; i++)
             {
                 <div>
-                    @Html.TextBoxFor(f => f.Question[i - 1], new { @class = "form-control", placeholder = $"{i} Soru"})
+                    @Html.TextBoxFor(f => f.Question[i - 1], new { @class = "form-control", placeholder = $"{i} Soru" })
                 </div>
                 <div>
                     <div class="input-group">
@@ -35,7 +35,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">A</span>
                         </div>
-                        @Html.TextBoxFor(f => f.A[i - 1], new {  @class = "form-control" })
+                        @Html.TextBoxFor(f => f.A[i - 1], new { @class = "form-control" })
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">B</span>
                         </div>
@@ -54,8 +54,14 @@
                         @Html.TextBoxFor(f => f.D[i - 1], new { @class = "form-control" })
                     </div>
                 </div>
+                <div>
+                    
+                        @Html.DropDownListFor(f => f.DogruCevap[i - 1], (SelectList)ViewBag.DogruCevaplar, new { @class="form-control" })
+                    
+                </div>
                 <br />
             }
+          
             <input type="submit" class="btn btn-primary btn-lg btn-block" value="Quiz Ekle">
         }
 
@@ -64,7 +70,7 @@
     <script type="text/javascript">
         function myFunction() {
             var idIndex = document.getElementById("wiredPosts").value;
-            window.location.href = "?id=" + idIndex;
+            window.location.href = "?id=" + idIndex; 
         }
     </script>
 

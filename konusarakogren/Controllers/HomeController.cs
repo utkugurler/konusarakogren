@@ -32,6 +32,12 @@ namespace konusarakogren.Controllers
 			ViewBag.wiredPosts = new SelectList(wiredPosts, "Id", "Title");
 
 			ViewBag.id = Request.Query["id"];
+			List<string> dogru = new List<string>();
+			dogru.Add("a");
+			dogru.Add("b");
+			dogru.Add("c");
+			dogru.Add("d");
+			ViewBag.DogruCevaplar = new SelectList(dogru);
 
 			if (Request.Query["id"].Count > 0)
 			{
@@ -76,7 +82,7 @@ namespace konusarakogren.Controllers
 					bool result = questionDAL.Add(wiredPosts[Convert.ToInt32(Request.Query["id"])].Title, 
 													wiredPosts[Convert.ToInt32(Request.Query["id"])].Description, model.Question[i], 
 														model.A[i], model.B[i], model.C[i], model.D[i], 
-															getLastQuizId+1);
+															getLastQuizId+1, model.DogruCevap[i]);
 				}
 				return RedirectToAction("QuizList");
 			}
@@ -102,7 +108,7 @@ namespace konusarakogren.Controllers
 				}
 				else if(submit == "View")
 				{
-					return RedirectToAction($"QuizView");
+					return RedirectToAction($"QuizView", new { quizId = quizId });
 				}
 			}
 			else
@@ -159,41 +165,44 @@ namespace konusarakogren.Controllers
 
 			if (soru1 == dogruCevaplar[0])
 			{
-				answers.Soru1 = true;	
+				answers.Soru1 = true;
+				answers.Soru1cevap = 'a';
 			}
 			else
 			{
 				answers.Soru1 = false;
+				answers.Soru1cevap = 'a';
 			}
 			if (soru2 == dogruCevaplar[1])
 			{
 				answers.Soru2 = true;
-
+				answers.Soru2cevap = 'b';
 			}
 			else
 			{
 				answers.Soru2 = false;
+				answers.Soru2cevap = 'b';
 
 			}
 			if (soru3 == dogruCevaplar[2])
 			{
 				answers.Soru3 =true;
-
+				answers.Soru3cevap = 'c';
 			}
 			else
 			{
 				answers.Soru3 = false;
-
+				answers.Soru3cevap = 'c';
 			}
 			if (soru4 == dogruCevaplar[3])
 			{
 				answers.Soru4 = true;
-
+				answers.Soru4cevap = 'd';
 			}
 			else
 			{
 				answers.Soru4 = false;
-
+				answers.Soru4cevap = 'd';
 			}
 
 			var json = Newtonsoft.Json.JsonConvert.SerializeObject(answers);

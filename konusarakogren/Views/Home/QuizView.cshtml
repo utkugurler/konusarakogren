@@ -8,30 +8,51 @@
 <html>
 <head></head>
 <body>
-    @{ 
+    @{
         <br />
-            <input type="hidden" value="@ViewBag.quizid" id="quizid"/>
-            <input type="text" value="adasasd" id="results" />
-            @Html.Raw(ViewBag.posts);<br />
-            @Html.Raw(ViewBag.description);<br />
-        for (int i = 0; i < Convert.ToInt32(ViewBag.count); i++)
-        {
-            <br />
+        <input type="hidden" value="@ViewBag.quizid" id="quizid" />
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <input type="hidden" value="@ViewBag.quizid" id="quizid" />
+                <center><h1 class="display-4">@ViewBag.posts</h1></center>
+                <center> <p class="lead">@ViewBag.description</p></center>
+            </div>
+        </div>
 
-            @Html.Raw(ViewBag.questions[i]);
+        <div class="row">
+
+            @for (int i = 0; i < Convert.ToInt32(ViewBag.count); i++)
+            {
             <br />
             string a = "soru" + (i + 1);
-            <input type="radio" name="@a" value="a"/><label>@ViewBag.a[i]</label>
-            <input type="radio" name="@a" value="b"/><label>@ViewBag.b[i]</label>
-            <input type="radio" name="@a" value="c"/><label>@ViewBag.c[i]</label>
-            <input type="radio" name="@a" value="d"/><label>@ViewBag.d[i]</label>
-        }
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@ViewBag.questions[i]</h5>
+                        <label id="@a-tasarim-a" class="btn btn-secondary active" style=" width: 100%; height: 40%; ">
+                            <input type="radio" name="@a" value="a" /> @ViewBag.a[i]
+                        </label>
+                        <label id="@a-tasarim-b" class="btn btn-secondary active" style=" width: 100%; height: 40%;">
+                            <input type="radio" name="@a" value="b" /> @ViewBag.b[i]
+                        </label>
+                        <label id="@a-tasarim-c" class="btn btn-secondary active" style=" width: 100%; height: 40%;  ">
+                            <input type="radio" name="@a" value="c" /> @ViewBag.c[i]
+                        </label>
+                        <label id="@a-tasarim-d" class="btn btn-secondary active" style=" width: 100%; height: 40%;  ">
+                            <input type="radio" name="@a" value="d" /> @ViewBag.d[i]
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            }
+        </div>
         <br />
-        <input type="submit" value="Sınavı Bitir" id="checkSubmit"/>
+        <center><input type="submit" value="Sınavı Bitir" id="checkSubmit" class="btn btn-primary btn-lg btn-block" style="background-color:#ee2c2c; opacity: 0.8; width: 30%; height: 40%;" /></center>
     }
-   
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
     $(document).ready(function () {
         $("#checkSubmit").click(function () {
             var nr1 = $("input[name='soru1']:checked").val();
@@ -46,41 +67,47 @@
                     var obj = JSON.parse(json);
                     obj = JSON.parse(obj);
 
-                    alert(obj.Soru1);
+                    var harf = obj.Soru1cevap;
 
                     if (obj.Soru1 == true) {
-                        $("input[name='soru1']:checked").removeClass();
-                        $("input[name='soru1']:checked").addClass('sepiaImage');
-                        //alert($("input[name='soru1']:checked").val());
-                        //$("input[name='soru1']:checked").change(function ()
-                        //{
-                        //    $("input[name='soru1']:checked").removeClass();
-                        //    $("input[name='soru1']:checked").addClass('sepiaImage');
-                        //});
+                        $('#soru1-tasarim-' + harf).removeClass('btn btn-secondary active');
+                        $('#soru1-tasarim-' + harf).addClass('btn btn-success');
                     }
                     else {
-                        $("input[name='soru1']:checked").change(function () {
-                            alert($("input[name='soru1']:checked").val());
-                            $("input[name='soru1']:checked").removeClass();
-                            $("input[name='soru1']:checked").addClass('sepiaImage');
-                        });
+                        $('#soru1-tasarim-' + harf).removeClass('btn btn-secondary active');
+                        $('#soru1-tasarim-' + harf).addClass('btn btn-danger');
                     }
+                    harf = obj.Soru2cevap;
                     if (obj.Soru2 == true) {
-
+                        $('#soru2-tasarim-' + harf).removeClass('btn btn-secondary active');
+                        $('#soru2-tasarim-' + harf).addClass('btn btn-success');
                     }
                     else {
-
+                        $('#soru2-tasarim-' + harf).removeClass('btn btn-secondary active');
+                        $('#soru2-tasarim-' + harf).addClass('btn btn-danger');
                     }
+
+                    harf = obj.Soru3cevap;
                     if (obj.Soru3 == true) {
+                        $('#soru3-tasarim-' + harf).removeClass('btn btn-secondary active');
+                        $('#soru3-tasarim-' + harf).addClass('btn btn-success');
 
                     }
                     else {
+                        $('#soru3-tasarim-' + harf).removeClass('btn btn-secondary active');
+                        $('#soru3-tasarim-' + harf).addClass('btn btn-danger');
 
                     }
+
+                    harf = obj.Soru4cevap;
                     if (obj.Soru4 == true) {
+                        $('#soru4-tasarim-' + harf).removeClass('btn btn-secondary active');
+                        $('#soru4-tasarim-' + harf).addClass('btn btn-success');
 
                     }
                     else {
+                        $('#soru4-tasarim-' + harf).removeClass('btn btn-secondary active');
+                        $('#soru4-tasarim-' + harf).addClass('btn btn-danger');
 
                     }
                     if (data.status == "ok") {
@@ -92,7 +119,7 @@
             })
         })
     })
-</script>
+    </script>
 </body>
 </html>
 

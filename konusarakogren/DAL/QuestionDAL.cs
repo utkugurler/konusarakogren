@@ -26,7 +26,7 @@ namespace konusarakogren.DAL
 			}
 		}
 
-		public bool Add(string title, string description, string question, string a, string b, string c, string d, int quizId)
+		public bool Add(string title, string description, string question, string a, string b, string c, string d, int quizId, string dogruCevap)
 		{
 			sqliteConnectionStringBuilder.DataSource = @"C:\Users\utkug\Documents\konusarakogren\konusarakogren\bin\Debug\netcoreapp3.1\db\konusarakOgrenDB.db";
 
@@ -36,7 +36,8 @@ namespace konusarakogren.DAL
 				connection.Open();
 
 				var tableCmd = connection.CreateCommand();
-				tableCmd.CommandText = $"INSERT INTO {QuestionsTable}(title,description,question, a, b, c, d, quizId, publishdate) values('{title.Replace("'", "")}', '{description.Replace("'", "")}', '{question.Replace("'", "")}', '{a.Replace("'", "")}', '{b.Replace("'", "")}', '{c.Replace("'", "")}', '{d.Replace("'", "")}', {quizId}, '{DateTime.Now}')";
+				tableCmd.CommandText = $"INSERT INTO {QuestionsTable}(title,description,question, a, b, c, d, quizId, publishdate,dogrucevap) " +
+					$"values('{title.Replace("'", "")}', '{description.Replace("'", "")}', '{question.Replace("'", "")}', '{a.Replace("'", "")}', '{b.Replace("'", "")}', '{c.Replace("'", "")}', '{d.Replace("'", "")}', {quizId}, '{DateTime.Now}', '{dogruCevap}')";
 				result = tableCmd.ExecuteNonQuery();
 			}
 			if(result > 0)
