@@ -8,7 +8,7 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
     <div>
-        @Html.DropDownList("wiredPosts", ViewBag.wiredPosts as SelectList, "Lütfen Yazı Seçiniz", new { onchange = "myFunction()" })
+        @Html.DropDownList("wiredPosts", ViewBag.wiredPosts as SelectList, "Lütfen Yazı Seçiniz", new { @class = "form-control", onchange = "myFunction()" })
         <div>
             <h4>
                 <div class="alert alert-success" role="alert">
